@@ -1,0 +1,70 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Full Stack Development</title>
+	<link href="./Content/bootstrap.css" rel="stylesheet"/>
+<link href="./Content/site.css" rel="stylesheet"/>
+
+<script src="./Scripts/modernizr-2.8.3.js"></script>
+<script src="./Scripts/jquery-3.3.1.js"></script>
+
+<script src="./Scripts/bootstrap.js"></script>
+<script src="./Scripts/angular.js"></script>
+<script src="./Scripts/angular.min.js"></script>
+<script src="./Scripts/angular.js"></script>
+<script src="./Scripts/angular.min.js"></script>
+<script>
+	var app = angular.module('fullstack', []);
+    app.controller('tests',
+
+		function ($scope)
+		{
+            $scope.frameurl = "";
+            
+            $scope.login = function ()
+            {
+                $scope.frameurl = "login.html";
+            }
+            $scope.frontend = function ()
+            {
+                $scope.frameurl = "frontend.html";
+            }
+        }
+    );
+</script>
+</head>
+<body ng-app="fullstack" ng-controller="tests" ng-init="login()">
+    <div class="navbar navbar-inverse navbar-fixed-top" >
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="main.html">Full Stack Development</a>
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li><a href="#" ng-click="frontend()">Front End</a></li>
+                    <li><a href="#" ng-click="login()">Back End</a></li>
+                    <li><a href="#" >FullStack</a></li>
+                </ul>
+                
+            </div>
+        </div>
+    </div>
+
+    <iframe src={{frameurl}} width=100% class="frame"></iframe>
+    <div class="container body-content">    
+			<hr />
+			<footer>
+				<p>&copy; 2018 - Richard Magsuci</p>
+			</footer>
+    </div>
+
+</body>
+</html>
