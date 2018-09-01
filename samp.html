@@ -1,25 +1,22 @@
 <!DOCTYPE html>
-<html>
-<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
-<body>
+<html ng-app="myApp">
+<head>
+  <script src="http://code.angularjs.org/1.0.0rc10/angular-1.0.0rc10.js"></script>
+  <script src="http://code.angularjs.org/1.0.0rc10/angular-cookies-1.0.0rc10.js"></script>
+  <script>
+    angular.module('myApp', ['ngCookies']);
+    function CookieCtrl($scope, $cookieStore) {
+		$cookieStore.put('tab', tabName);
+      $scope.lastVal = $cookieStore.get('tab');
 
-<div ng-app="myApp" ng-controller="myCtrl"> 
-
-<p>Today's welcome message is:</p>
-
-<h1>{{myWelcome}}</h1>
-
-</div>
-
-<script>
-var app = angular.module('myApp', []);
-app.controller('myCtrl', function($scope, $http) {
-  $http.get("https://ancient-depths-53773.herokuapp.com/users/Richard")
-  .then(function(response) {
-      $scope.myWelcome = response.data;
-  });
-});
-</script>
-
+      $scope.changeTab = function(tabName){
+          $scope.lastVal = tabName;
+          $cookieStore.put('tab', tabName);
+      };
+    }
+  </script>
+</head>
+<body ng-controller="CookieCtrl">
+    {{lastVal}}
 </body>
 </html>

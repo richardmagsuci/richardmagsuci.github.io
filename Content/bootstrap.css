@@ -6763,11 +6763,21 @@ button.close {
   box-sizing: border-box;
 }
 .noticemessage{
-   color: red;
+   color: rgb(139, 4, 4);
 }
 .form-group {
   border: 2px solid rgb(184, 184, 184);
   border-radius: 5px;
   padding: 35px;
+}
+.link{
+  color: orange;
+}
+.logoutLblPos{
+  float:right;
+  position:fixed;
+  right:10px;
+  color: orange;
+  top:15px;
 }
 /*# sourceMappingURL=bootstrap.css.map */

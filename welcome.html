@@ -1,0 +1,63 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Full Stack Development</title>
+	<link href="./Content/bootstrap.css" rel="stylesheet"/>
+<link href="./Content/site.css" rel="stylesheet"/>
+
+<script src="./Scripts/modernizr-2.8.3.js"></script>
+<script src="./Scripts/jquery-3.3.1.js"></script>
+
+<script src="./Scripts/bootstrap.js"></script>
+<script src="./Scripts/angular.js"></script>
+<script src="./Scripts/angular.min.js"></script>
+<script src="./Scripts/angular.js"></script>
+<script src="./Sc/ripts/angular.min.js"></script>t>
+<script>
+	var app = angular.module('fullstack', []);
+
+	app.controller('tests',
+
+		function ($scope, $http)
+		{
+			$scope.username="";
+			$scope.password="";
+			$scope.message="";
+
+			$scope.login = function ()
+			{				
+				$http.get('http://localhost:3000/user/' +  $scope.username + "/" + $scope.password ).then(
+					function (response) {
+						$cookieStore.put('fullstack-page','frontend.html');
+					},
+					function(response) {
+						$scope.message = "* " + response.data;
+					}
+				);
+			}
+		}
+	);
+</script>
+</head>
+<body>
+    <div class="container body-content">    
+        <div id="dmain" class="jumbotron" ng-app="fullstack" ng-controller="tests">  
+		   <h2>Full Stack Development</h2>
+		   <hr/>
+			<p ng-bind="notice" class="noticemessage"></p>				
+			<div >
+                <h4>Full Stack Lead Developer - Test</h4>
+                <br>
+                <p>Author: Richard V. Magsuci</p>
+                <br/>
+                <p>Front End - Demonstrates the ability of the google translate API.</p>
+                <p>Back End (API) - Developed using Node.Js and Express JS. for user access verification and creation.</p>
+			  </div>
+        </div>  
+	</div>
+	
+</body>
+</html>

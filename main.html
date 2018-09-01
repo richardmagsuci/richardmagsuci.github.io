@@ -16,27 +16,61 @@
 <script src="./Scripts/angular.min.js"></script>
 <script src="./Scripts/angular.js"></script>
 <script src="./Scripts/angular.min.js"></script>
+<script src="./Scripts/angular-cookies.js"></script>
 <script>
 	var app = angular.module('fullstack', []);
     app.controller('tests',
-
-		function ($scope)
+		function ($scope,$http)
 		{
             $scope.frameurl = "";
-            
-            $scope.login = function ()
-            {
-                $scope.frameurl = "login.html";
-            }
+            $scope.ipaddress= ""; 
+            $scope.user= "";            
+ 
+            $scope.ipaddress = "";
+             
             $scope.frontend = function ()
             {
                 $scope.frameurl = "frontend.html";
             }
+            $scope.welcome = function ()
+            {
+                $scope.frameurl = "welcome.html";
+            }
+            
+            $scope.getIP = function (){
+                $http.get('https://api.ipify.org/?format=json').then(
+                    function (response) {
+                        $scope.ipaddress = response.data.ip;
+                        $scope.validate();
+                    }
+                );
+            }
+
+            $scope.validate = function ()
+            {	                			
+                 
+                $http.get('http://localhost:3000/activesession/'+ $scope.ipaddress).then(
+                    function (response) {
+                        
+                        $scope.user = response.data.firstname + " " + response.data.lastname;
+                        $scope.frameurl ='welcome.html'
+                    },
+                    function(response) {
+                        if(response.data.flag =="N")
+                        {
+                            $scope.frameurl ='login.html';
+                        }
+                    }
+                );
+            }    
         }
+        
     );
+
+    
 </script>
 </head>
-<body ng-app="fullstack" ng-controller="tests" ng-init="login()">
+<body ng-app="fullstack" ng-controller="tests" ng-init="getIP()">
     <div class="navbar navbar-inverse navbar-fixed-top" >
         <div class="container">
             <div class="navbar-header">
@@ -50,14 +84,13 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li><a href="#" ng-click="frontend()">Front End</a></li>
-                    <li><a href="#" ng-click="login()">Back End</a></li>
-                    <li><a href="#" >FullStack</a></li>
-                </ul>
-                
+                    <li><a href="#" ng-click="backend()">Back End (API)</a></li>
+                    <li><a href="#" ng-click="validate()">About</a></li>
+                </ul>              
+                <li><a class="logoutLblPos" href="login.html" ng-click="frontend()">Log out</a>
             </div>
         </div>
     </div>
-
     <iframe src={{frameurl}} width=100% class="frame"></iframe>
     <div class="container body-content">    
 			<hr />

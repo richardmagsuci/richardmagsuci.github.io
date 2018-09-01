@@ -18,37 +18,63 @@
 <script src="./Sc/ripts/angular.min.js"></script>
 <script>
 	var app = angular.module('fullstack', []);
-	var translateparam = { q: 'hello world', source: 'en',target: 'de'};
-	var vtranslatetext = "";
-
-	const apiKey= "AIzaSyCqKl3m4dIlhWIi_S5OFRrDQan9QWmtAAs";
-
 	app.controller('tests',
 
 		function ($scope, $http)
 		{
-			$scope.translation = "";
-			$scope.languages = "";      
-			$scope.detectq = "";
-			$scope.detectedlang = "";
-			$scope.translang = "";
-			$scope.notice = "";
+			$scope.username="";
+			$scope.password="";
+			$scope.message="";
+			$scope.session="";
+			$scope.ipaddress ="";
 
-			$scope.translate = function ()
-			{
-				$scope.detect();
-				vtranslatetext = $scope.detectq;
-				translateparam = { q: $scope.detectq, source: $scope.detectedlang ,target: $scope.translang};
-				$http.post('https://translation.googleapis.com/language/translate/v2?key=' + apiKey,translateparam).then(
+			$scope.getIP = function (){
+                $http.get('https://api.ipify.org/?format=json').then(
+                    function (response) {
+                        $scope.ipaddress = response.data.ip;
+                        $scope.login();
+                    }
+                );
+            }
+
+			$scope.login = function ()
+			{		
+				$http.get('http://localhost:3000/user/' +  $scope.username + "/" + $scope.password ).then(
 					function (response) {
-						var res = response.data;
-						var obj =  angular.fromJson(res); 
-
-						//var obj =  JSON.parse(httpRes);	
-						$scope.translation = obj.data.translations[0].translatedText;		
+						$scope.validateSession();
+						//location.reload();
 					},
 					function(response) {
-						$scope.notice = "* An error occured on Google API while translating. Please ensure all fields are filled.";
+						$scope.message = "* " + response.data;
+					}
+				);
+			}
+
+			$scope.validateSession = function ()
+			{				
+				$http.get('http://localhost:3000/session/' +  $scope.username + "/" + $scope.ipaddress).then(
+					function (response) {
+						$scope.session=response.data._id;
+					},
+					function(response) {
+						if(response.data.flag =="N")
+						{
+							//$scope.message=response.data;
+							$scope.createSession();
+						}
+					}
+				);
+			}
+
+			$scope.createSession = function ()
+			{				
+				$http.post('http://localhost:3000/session/' +  $scope.username + "/" + $scope.ipaddress).then(
+					function (response) {
+						$scope.session=response.data._id;
+						top.location = "main.html";
+					},
+					function(response) {
+						$scope.message = "* " + response.data;
 					}
 				);
 			}
@@ -58,26 +84,30 @@
 </head>
 <body>
     <div class="container body-content">    
-        <div id="dmain" class="jumbotron" ng-app="fullstack" ng-controller="tests" ng-init="getlanguages()">  
+        <div id="dmain" class="jumbotron" ng-app="fullstack" ng-controller="tests">  
 		   <h2>Full Stack Development</h2>
 		   <hr/>
 			<p ng-bind="notice" class="noticemessage"></p>				
 			<div >
 				<h4>Please login to continue</h4>
+				<p ng-bind="message"  class="noticemessage"></p>
 				<br/>
 					<div class="form-group">
 						<div>
 							<label for="email">Username:</label>
-							<input type="email" class="form-control" id="email" placeholder="Enter username" name="email">
+							<input type="text" class="form-control" ng-model="username" placeholder="Enter username" name="email">
 						</div>
 						<div>
 							<label for="pwd">Password:</label>
-							<input type="password" class="form-control" id="pwd" placeholder="Enter password" name="pwd">
+							<input type="password" class="form-control" ng-model="password" placeholder="Enter password" name="pwd">
 						</div>
 						<div class="checkbox">
 							<label><input type="checkbox" name="remember"> Remember me</label>
 						</div>
-						<button type="submit" class="btn btn-default">Submit</button>
+						<button class="btn btn-default" ng-click="getIP()">Login</button>
+						<br/>
+						<br/>
+						<p>Not yet registered?.&nbsp;<a href="" class="link">Register here.</a></p>
 					</div>
 			  </div>
         </div>  
