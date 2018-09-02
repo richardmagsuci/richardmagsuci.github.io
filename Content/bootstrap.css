@@ -6761,6 +6761,7 @@ button.close {
   padding: 0;
   border: 0 none;
   box-sizing: border-box;
+  top:100px;
 }
 .noticemessage{
    color: rgb(139, 4, 4);
@@ -6779,6 +6780,15 @@ button.close {
   right:100px;
   color: orange;
   top:15px;
-  background-color: black;
+  background-color: inherit;
+}
+.userlabel{
+  float:right;
+  text-align: right;
+  position:fixed;
+  right:200px;
+  color: black;
+  top:100px;
+  background-color: inherit;
 }
 /*# sourceMappingURL=bootstrap.css.map */
