@@ -1,0 +1,117 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Full Stack Development</title>
+	<link href="./Content/bootstrap.css" rel="stylesheet"/>
+<link href="./Content/site.css" rel="stylesheet"/>
+
+<script src="./Scripts/modernizr-2.8.3.js"></script>
+<script src="./Scripts/jquery-3.3.1.js"></script>
+
+<script src="./Scripts/bootstrap.js"></script>
+<script src="./Scripts/angular.js"></script>
+<script src="./Scripts/angular.min.js"></script>
+<script src="./Scripts/angular.js"></script>
+<script src="./Sc/ripts/angular.min.js"></script>
+<script>
+	var app = angular.module('fullstack', []);
+	app.controller('tests',
+
+		function ($scope, $http)
+		{
+            $scope.firstname="";
+            $scope.lastname="";
+			$scope.username="";
+			$scope.password1="";
+            $scope.password2="";
+			$scope.message="";
+			$scope.session="";
+			$scope.ipaddress ="";
+            $scope.nodeserver= "https://mongouser.herokuapp.com/";
+
+			$scope.register = function ()
+			{				
+                if ($scope.firstname == "")
+                {
+                    $scope.message= "* Please enter your first name."
+                }
+                else if ($scope.lastname == "")
+                {
+                    $scope.message= "* Please enter your last name."
+                }
+                else if ($scope.username == "")
+                {
+                    $scope.message= "* Please enter your choosen username."
+                }
+                else if ($scope.password1 == "")
+                {
+                    $scope.message= "* Please enter your password."
+                }
+                else if ($scope.password2 == "")
+                {
+                    $scope.message= "* Please re-enter your password."
+                }
+                else if ($scope.password2 != $scope.password1)
+                {
+                    $scope.message= "* Password does not match."
+                }
+                else{
+                    $http.post($scope.nodeserver + 'users_new/' +  $scope.firstname + "/" + $scope.lastname + "/" +  $scope.username + "/" + $scope.password1).then(
+                        function (response) {
+                            alert("User registration successful!. Please try logging in now.");
+                            top.location = "main.html";
+                        },
+                        function(response) {	
+                            $scope.message=response.data;
+                            alert(response);						
+                        }
+                    );
+                }
+            }
+		}
+	);
+</script>
+</head>
+<body>
+    <div class="container body-content">    
+        <div id="dmain" class="jumbotron" ng-app="fullstack" ng-controller="tests">  
+		   <h2>Full Stack Development</h2>
+		   <hr/>
+			<p ng-bind="notice" class="noticemessage"></p>				
+			<div >
+				<h4>User Registration</h4>
+				<p ng-bind="message"  class="noticemessage"></p>
+				<br/>
+					<div class="form-group">
+                        <div>
+                            <label for="name">First name:</label>
+                            <input type="text" class="form-control" ng-model="firstname" placeholder="Enter first name">
+                        </div>
+                        <div>
+                                <label for="name">Last name:</label>
+                                <input type="text" class="form-control" ng-model="lastname" placeholder="Enter last name">
+                            </div>
+						<div>
+							<label for="email">Username:</label>
+							<input type="text" class="form-control" ng-model="username" placeholder="Enter username" name="email">
+						</div>
+						<div>
+							<label for="pwd">Password:</label>
+							<input type="password" class="form-control" ng-model="password1" placeholder="Enter password" name="pwd">
+                        </div>
+                        <div>
+                            <label for="pwd">Re-enter password:</label>
+                            <input type="password" class="form-control" ng-model="password2" placeholder="Re-enter password" name="pwd">
+                            </div>
+						<br/>
+						<button class="btn btn-default" ng-click="register()">Register</button>
+					</div>
+			  </div>
+        </div>  
+	</div>
+	
+</body>
+</html>

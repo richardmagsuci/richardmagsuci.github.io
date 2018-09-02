@@ -27,6 +27,7 @@
 			$scope.message="";
 			$scope.session="";
 			$scope.ipaddress ="";
+			$scope.nodeserver= "https://mongouser.herokuapp.com/"; 
 
 			$scope.getIP = function (){
                 $http.get('https://api.ipify.org/?format=json').then(
@@ -39,7 +40,7 @@
 
 			$scope.login = function ()
 			{		
-				$http.get('http://localhost:3000/user/' +  $scope.username + "/" + $scope.password ).then(
+				$http.get($scope.nodeserver + 'user/' +  $scope.username + "/" + $scope.password ).then(
 					function (response) {
 						$scope.validateSession();
 						//location.reload();
@@ -52,7 +53,7 @@
 
 			$scope.validateSession = function ()
 			{				
-				$http.get('http://localhost:3000/session/' +  $scope.username + "/" + $scope.ipaddress).then(
+				$http.get($scope.nodeserver + 'session/' +  $scope.username + "/" + $scope.ipaddress).then(
 					function (response) {
 						$scope.session=response.data._id;
 					},
@@ -68,7 +69,7 @@
 
 			$scope.createSession = function ()
 			{				
-				$http.post('http://localhost:3000/session/' +  $scope.username + "/" + $scope.ipaddress).then(
+				$http.post($scope.nodeserver + 'session/' +  $scope.username + "/" + $scope.ipaddress).then(
 					function (response) {
 						$scope.session=response.data._id;
 						top.location = "main.html";
@@ -77,6 +78,11 @@
 						$scope.message = "* " + response.data;
 					}
 				);
+			}
+
+			$scope.register = function ()
+			{
+				window.location.replace ("register.html");
 			}
 		}
 	);
@@ -101,13 +107,11 @@
 							<label for="pwd">Password:</label>
 							<input type="password" class="form-control" ng-model="password" placeholder="Enter password" name="pwd">
 						</div>
-						<div class="checkbox">
-							<label><input type="checkbox" name="remember"> Remember me</label>
-						</div>
+						<br/>
 						<button class="btn btn-default" ng-click="getIP()">Login</button>
 						<br/>
 						<br/>
-						<p>Not yet registered?.&nbsp;<a href="" class="link">Register here.</a></p>
+						<p>Not yet registered?.&nbsp;<a href="#" class="link" ng-click="register()">Register here.</a></p>
 					</div>
 			  </div>
         </div>  

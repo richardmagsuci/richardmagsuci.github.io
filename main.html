@@ -24,13 +24,23 @@
 		{
             $scope.frameurl = "";
             $scope.ipaddress= ""; 
-            $scope.user= "";            
+            $scope.user= "";   
+            $scope.show = false;    
+            $scope.nodeserver= "https://mongouser.herokuapp.com/";     
  
             $scope.ipaddress = "";
              
             $scope.frontend = function ()
             {
                 $scope.frameurl = "frontend.html";
+            }
+            $scope.about = function ()
+            {
+                $scope.frameurl = "about.html";
+            }
+            $scope.backend = function ()
+            {
+                $scope.frameurl = "backend.html";
             }
             $scope.welcome = function ()
             {
@@ -49,10 +59,11 @@
             $scope.validate = function ()
             {	                			
                  
-                $http.get('http://localhost:3000/activesession/'+ $scope.ipaddress).then(
+                $http.get($scope.nodeserver + 'activesession/'+ $scope.ipaddress).then(
                     function (response) {
                         
-                        $scope.user = response.data.firstname + " " + response.data.lastname;
+                        $scope.session = response.data._id;
+                        $scope.show = true; 
                         $scope.frameurl ='welcome.html'
                     },
                     function(response) {
@@ -62,7 +73,21 @@
                         }
                     }
                 );
-            }    
+            }  
+
+            $scope.log_out = function ()
+			{				
+				$http.post($scope.nodeserver + 'remove_session/' +  $scope.ipaddress).then(
+					function (response) {
+                        $scope.show = false; 
+						top.location = "main.html";
+					},
+					function(response) {
+						$scope.user= response.data.error;
+                        
+					}
+				);
+			}  
         }
         
     );
@@ -82,15 +107,16 @@
                 <a class="navbar-brand" href="main.html">Full Stack Development</a>
             </div>
             <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
+                <ul class="nav navbar-nav" ng-show="show">
                     <li><a href="#" ng-click="frontend()">Front End</a></li>
                     <li><a href="#" ng-click="backend()">Back End (API)</a></li>
-                    <li><a href="#" ng-click="validate()">About</a></li>
+                    <li><a href="#" ng-click="about()">About</a></li>
                 </ul>              
-                <li><a class="logoutLblPos" href="login.html" ng-click="frontend()">Log out</a>
+               <button type="button" class="logoutLblPos" ng-click="log_out()" ng-show="show">Log out</button>
             </div>
         </div>
     </div>
+    
     <iframe src={{frameurl}} width=100% class="frame"></iframe>
     <div class="container body-content">    
 			<hr />
@@ -98,6 +124,5 @@
 				<p>&copy; 2018 - Richard Magsuci</p>
 			</footer>
     </div>
-
 </body>
 </html>

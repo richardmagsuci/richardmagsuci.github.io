@@ -6776,8 +6776,9 @@ button.close {
 .logoutLblPos{
   float:right;
   position:fixed;
-  right:10px;
+  right:100px;
   color: orange;
   top:15px;
+  background-color: black;
 }
 /*# sourceMappingURL=bootstrap.css.map */

@@ -1,0 +1,77 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Full Stack Development</title>
+	<link href="./Content/bootstrap.css" rel="stylesheet"/>
+<link href="./Content/site.css" rel="stylesheet"/>
+
+<script src="./Scripts/modernizr-2.8.3.js"></script>
+<script src="./Scripts/jquery-3.3.1.js"></script>
+
+<script src="./Scripts/bootstrap.js"></script>
+<script src="./Scripts/angular.js"></script>
+<script src="./Scripts/angular.min.js"></script>
+<script src="./Scripts/angular.js"></script>
+<script src="./Sc/ripts/angular.min.js"></script>
+<script>
+	var app = angular.module('fullstack', []);
+
+	app.controller('tests',
+
+		function ($scope, $http)
+		{
+			$scope.username="";
+			$scope.password="";
+			$scope.message="";
+            $scope.nodeserver= "https://mongouser.herokuapp.com/"; 
+
+			$scope.login = function ()
+			{				
+				$http.get($scope.nodeserver + 'user/' +  $scope.username + "/" + $scope.password ).then(
+					function (response) {
+						$cookieStore.put('fullstack-page','frontend.html');
+					},
+					function(response) {
+						$scope.message = "* " + response.data;
+					}
+				);
+			}
+		}
+	);
+</script>
+</head>
+<body>
+    <div class="container body-content">    
+        <div id="dmain" class="jumbotron" ng-app="fullstack" ng-controller="tests">  
+		   <h2>Back End Development using Node.js server</h2>
+		   <hr/>
+            <p ng-bind="notice" class="noticemessage"></p>	
+            <h4>The Back End (API)</h4>
+            <br>  			
+			<div class="form-group">      
+                <p>
+                    <p><b>Base API URL:&nbsp;</b>https://mongouser.herokuapp.com</p>
+                    <p><b>API URLs and parameters:</b></p>
+                    <ul>
+                        <li><b>User Authentication</b> - /user/:username?/:password? Method - GET <br/>
+                            <span>- Returns the user data if validated and return message 'Username or password is incorrect.' if not.</span><br/>
+                            <span>- Example of usage: GET https://mongouser.herokuapp.com/user/user123/password123 .</span>
+                        </li>
+                        <br/>
+                        <li><b>User Registration</b> - /users_new/:firstname?/:lastname?/:username?/:password? Method - POST <br/>
+                            <span>- Returns successful status, otherwise sends and error message.</span><br/>
+                            <span>- Example of usage: POST https://mongouser.herokuapp.com/users_new/Richard/Magsuci/user123/password123 .</span>
+                        </li>
+                    </ul>
+                    <hr/>
+                    <p><b>MongoDB Databse:</b>Hosted in mLab (https://mlab.com)</p>
+                </p>
+			  </div>
+        </div>  
+	</div>
+	
+</body>
+</html>
