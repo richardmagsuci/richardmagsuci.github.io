@@ -15,7 +15,7 @@
 <script src="./Scripts/angular.js"></script>
 <script src="./Scripts/angular.min.js"></script>
 <script src="./Scripts/angular.js"></script>
-<script src="./Sc/ripts/angular.min.js"></script>
+<script src="./Scripts/angular.min.js"></script>
 <script>
 	var app = angular.module('fullstack', []);
 	app.controller('tests',
@@ -30,7 +30,7 @@
 			$scope.message="";
 			$scope.session="";
 			$scope.ipaddress ="";
-            $scope.nodeserver= "https://mongouser.herokuapp.com/";
+            $scope.nodeserver= "https://fsddb.herokuapp.com/";
 
 			$scope.register = function ()
 			{				
@@ -66,7 +66,7 @@
                         },
                         function(response) {	
                             $scope.message=response.data;
-                            alert(response);						
+                            alert('Error!: ' + response);						
                         }
                     );
                 }

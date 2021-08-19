@@ -23,10 +23,10 @@
 		function ($scope,$http)
 		{
             $scope.frameurl = "";
-            $scope.ipaddress= ""; 
+            $scope.ip_address= ""; 
             $scope.user= "";   
             $scope.show = false;    
-            $scope.nodeserver= "https://mongouser.herokuapp.com/";     
+            $scope.nodeserver= "https://fsddb.herokuapp.com/";     
  
             $scope.ipaddress = "";
              
@@ -48,9 +48,9 @@
             }
             
             $scope.getIP = function (){
-                $http.get('https://api.ipify.org/?format=json').then(
+                $http.get('https://api64.ipify.org?format=json').then(
                     function (response) {
-                        $scope.ipaddress = response.data.ip;
+                        $scope.ip_address = response.data.ip;
                         $scope.validate();
                     }
                 );
@@ -59,7 +59,7 @@
             $scope.validate = function ()
             {	                			
                  
-                $http.get($scope.nodeserver + 'activesession/'+ $scope.ipaddress).then(
+                $http.get($scope.nodeserver + 'activesession/'+ $scope.ip_address).then(
                     function (response) {
                         
                         $scope.session = response.data._id;
@@ -116,8 +116,8 @@
             </div>
         </div>
     </div>
-    <br><br>
-    <iframe src={{frameurl}} width=100% height=100% class="frame"></iframe>
+    
+    <iframe src={{frameurl}} width=100% class="frame"></iframe>
     <div class="container body-content">    
 			<hr />
 			<footer>

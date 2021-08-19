@@ -29,14 +29,7 @@
 
 			$scope.login = function ()
 			{				
-				$http.get('http://localhost:3000/user/' +  $scope.username + "/" + $scope.password ).then(
-					function (response) {
-						$cookieStore.put('fullstack-page','frontend.html');
-					},
-					function(response) {
-						$scope.message = "* " + response.data;
-					}
-				);
+				
 			}
 		}
 	);

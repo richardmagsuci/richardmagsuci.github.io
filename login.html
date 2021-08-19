@@ -27,10 +27,10 @@
 			$scope.message="";
 			$scope.session="";
 			$scope.ipaddress ="";
-			$scope.nodeserver= "https://mongouser.herokuapp.com/"; 
+			$scope.nodeserver= "https://fsddb.herokuapp.com/"; 
 
 			$scope.getIP = function (){
-                $http.get('https://api.ipify.org/?format=json').then(
+                $http.get('https://api64.ipify.org?format=json').then(
                     function (response) {
                         $scope.ipaddress = response.data.ip;
                         $scope.login();
